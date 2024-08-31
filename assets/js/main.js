@@ -262,35 +262,43 @@
 
   window.addEventListener('load', () => {
     const canvas = document.getElementById('particleCanvas');
+    const portfolioSection = document.getElementById('portfolio');
     const ctx = canvas.getContext('2d');
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight * 0.5;
-
+  
+    function resizeCanvas() {
+      canvas.width = portfolioSection.offsetWidth;
+      canvas.height = portfolioSection.offsetHeight;
+    }
+  
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+  
     let particleArray = [];
-
+  
     // adjust these values
     const numberOfParticles = 125;
     const maxSizeOfParticles = 20;
     const minSizeOfParticles = 10;
-
+  
     class Particle {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.size = Math.random() * maxSizeOfParticles + minSizeOfParticles;
-        this.speedX = Math.random() * 1.5 - .75;
+        this.speedX = Math.random() * 1.0 - .75;
         this.speedY = Math.random() * 1.5 - .75;
       }
-
+  
       update() {
         this.x += this.speedX + Math.random() * 0.2 - 0.1;
         this.y += this.speedY;
-
+  
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  
         if (this.size > 0.2) this.size -= 0.1;
       }
-
-
+  
       draw() {
         let gradient = ctx.createRadialGradient(this.x, this.y, this.size / 6, this.x, this.y, this.size);
         gradient.addColorStop(0, 'rgba(173, 216, 230, 1)'); 
@@ -307,51 +315,35 @@
         ctx.fill();
         ctx.stroke();
       }
-      
-
-      /* Second design for bubbles */
-      
-      /*draw() {
-        ctx.fillStyle = '#ADD8E6'; // light blue
-        ctx.strokeStyle = 'white'; // white outline
-        ctx.lineWidth = 0.5; // adjust this value for outline thickness
-      
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.closePath();
-      
-        ctx.fill();
-        ctx.stroke();
-      }*/
-      
     }
-
+  
     function createParticles() {
+      particleArray = [];
       for (let i = 0; i < numberOfParticles; i++) {
         particleArray.push(new Particle());
       }
     }
-
+  
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+  
       for (let i = 0; i < particleArray.length; i++) {
         particleArray[i].update();
         particleArray[i].draw();
-
+  
         if (particleArray[i].size <= 0.2) {
           particleArray.splice(i, 1);
           i--;
         }
       }
-
+  
       if (particleArray.length < numberOfParticles) {
         particleArray.push(new Particle());
       }
-
+  
       requestAnimationFrame(animateParticles);
     }
-
+  
     createParticles();
     animateParticles();
   });
