@@ -530,8 +530,20 @@ section {
 /*--------------------------------------------------------------
 # Portfolio
 --------------------------------------------------------------*/
+.portfolio {
+  min-height: 800px;
+  position: relative;
+}
+
+#particleCanvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
 .portfolio .portfolio-item {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .portfolio #portfolio-flters {
