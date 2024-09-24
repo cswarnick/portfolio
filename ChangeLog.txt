@@ -1,3 +1,5 @@
 7/26/2023:
-
 Added bubble effect in portfolio section, adjusted spacing, updated education information and skills
+
+9/24/2023:
+Today I got accepted into UNCW, so I've updated the site to include this education and fixed some phrasing
